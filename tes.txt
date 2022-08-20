@@ -1,0 +1,17 @@
+nampilin semua produk
+coba nampilin komponen
+bikin login
+intro redux
+secure page (page ga bisa diakses kalau ga ada token/user yang login)
+ngepost produk
+
+store = nyimpen state sifatnya global ada dimana aja
+action = ngejelasin apa yang bakal dilakuin
+reducer = ngejelasin perubahan state yang akan di-action
+dispatch = nge-execute si action
+Selector = buat ngambil state global
+
+dispatch action -> reducer -> reducer ngecek mau ngapain -> storenya ke-update
+
+
+mau nyimpen user login ke global state

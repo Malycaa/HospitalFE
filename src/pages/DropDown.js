@@ -1,61 +1,66 @@
-import React from 'react'
+import React from "react";
+import api from "../lib/api";
+import { Button, Container, Form, Row, Col, Image } from "react-bootstrap";
 
 export const CustomDropdown = (props) => (
   <div className="form-group">
-    <strong>{props.username}</strong>
     <select
       className="form-control"
       name="{props.username}"
+      disabled={props.isLoading}
       onChange={props.onChange}
     >
-      <option defaultValue>Select {props.username}</option>
-      {/* {props.data.map((item, index) => (
-        <option key={index} value={item.user_id}>
-          {item.username}
+      <option defaultValue>
+        {props.options.length !== 0 ? "Select" : "Loading.."}
+      </option>
+      {props.options.length !== 0 ? (
+        props.options.map((item, index) => (
+          <option key={index} value={JSON.stringify(item)}>
+            {item.full_name}
+          </option>
+        ))
+      ) : (
+        <option key={1} value={1}>
+          loading...
         </option>
-      ))} */}
+      )}
     </select>
   </div>
-)
+);
 export default class CustomListDropDown extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super();
     this.state = {
       collection: [],
-      value: '',
-    }
+      value: "",
+    };
   }
   componentDidMount = async () => {
-    // fetch('https://jsonplaceholder.typicode.com/users')
-    //   .then((response) => response.json())
-    //   .then((res) => this.setState({ collection: res }))
-    const [username, setusername] = useState("");
-    try {
-      const url = `/api/account/inquiryDoctor`;
-      const response = await api.post(url, {
-
-        value: username,
-      });
-      this.setState({ collection: response.data.data })
-      // dispatch(setToken(response.data.data))
-    } catch (error) {
-      alert("bad request");
-    }
-  }
+    const url = `/api/account/inquiryDoctor`;
+    const response = await api.post(url, {
+      value: "",
+    });
+    this.setState({ collection: response.data.data });
+  };
 
   onChange = (event) => {
-    this.setState({ value: event.target.value })
-  }
+    var item = JSON.parse(event.target.value);
+    this.setState({ value: item });
+    this.props.onChange(item);
+  };
+
   render() {
+    console.log(this.props.isLoading);
     return (
-      <div className="container mt-4">
-        <h2>React Dropdown List with Bootstrap Example</h2>
+      <Form.Group className="mt-2 text-start">
+        <Form.Label>Doctor</Form.Label>
         <CustomDropdown
           name={this.state.username}
           options={this.state.collection}
           onChange={this.onChange}
+          isLoading={this.props.isLoading}
         />
-      </div>
-    )
+      </Form.Group>
+    );
   }
 }

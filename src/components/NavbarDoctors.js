@@ -45,8 +45,6 @@ function NavbarDoctor() {
                 <Nav className="justify-content-end flex-grow-1 pe-3">
                   <Nav.Link href="#action1">Register Treatment</Nav.Link>
                   <Nav.Link href="#action2">Log Out</Nav.Link>
-
-
                 </Nav>
               </Offcanvas.Body>
             </Navbar.Offcanvas>

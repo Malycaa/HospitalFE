@@ -1,26 +1,29 @@
-import React, { useState } from 'react'
-import { Button, Container, Form, Row, Col, Image } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import api from '../lib/api';
-import { setToken } from '../reducers/token-store';
-import register from '../register.jpg'
-import NavbarSuperAdmin from '../components/NavbarSuperAdmin';
-import { CustomDropdown } from './DropDown';
+import React, { useState } from "react";
+import { Button, Container, Form, Row, Col, Spinner } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import api from "../lib/api";
+import { setToken } from "../reducers/token-store";
+import register from "../register.jpg";
+import NavbarSuperAdmin from "../components/NavbarSuperAdmin";
+import CustomListDropDown from "./DropDown";
+// import { CustomListDropDown } from './DropDown';
 
 const RegisterPatient = () => {
   const [user_id, setuser_id] = useState("");
   const [patient_name, setpatient_name] = useState("");
-  const [birth_place, setbirth_place] = useState("")
-  const [birth_date, setbirth_date] = useState("")
+  const [birth_place, setbirth_place] = useState("");
+  const [birth_date, setbirth_date] = useState("");
   const [address, setaddress] = useState("");
   const [gender, setgender] = useState("");
   const [complaints, setcomplaints] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleSubmit = async () => {
     try {
+      setLoading(true);
       const url = `/api/patient/addPatient`;
       const response = await api.post(url, {
         user_id: user_id,
@@ -29,125 +32,140 @@ const RegisterPatient = () => {
         birth_date: birth_date,
         address: address,
         gender: gender,
-        complaints: complaints
+        complaints: complaints,
       });
-      dispatch(setToken(response.data.data))
-      navigate("/");
-      console.log(response);
+      alert("Success Registering Patient")
+      setLoading(false);
+      navigate('/superadmin')
     } catch (error) {
       alert("failed register");
     }
+  };
 
-  }
+  const doctorDropdownEvent = (item) => {
+    setuser_id(item.user_id);
+  };
 
   return (
     <>
       <NavbarSuperAdmin />
       <Container>
         <Row>
-          <Col md={5} style={{ height: '100vh' }}>
+          <Col md={5} style={{ height: "80vh" }}>
             <Container className="h-100 d-flex align-items-center justify-content-center w-100">
               <Form
-                action=''
-                method='POST'
-                encType=''
-                onSubmit={(event) => { event.preventDefault(); handleSubmit() }}>
+                action=""
+                method="POST"
+                encType=""
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  handleSubmit();
+                }}
+              >
                 <Row>
                   <Col md={6}>
-                    <Form.Group className='mt-2 text-center'>
-                      <Form.Label>User Id</Form.Label>
-                      <Form.Control
-                        type='number'
-                        id='user_id'
-                        placeholder='User Id'
-                        required
-                        onChange={event => setuser_id(event.target.value)} />
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group className='mt-2 text-center'>
+                    <Form.Group className="mt-2 text-start">
                       <Form.Label>Full Name</Form.Label>
                       <Form.Control
-                        type='text'
-                        id='patient_name'
-                        placeholder='Full Name'
+                        type="text"
+                        id="patient_name"
+                        placeholder="Full Name"
                         required
-                        onChange={event => setpatient_name(event.target.value)} />
+                        onChange={(event) =>
+                          setpatient_name(event.target.value)
+                        }
+                        disabled={loading}
+                      />
                     </Form.Group>
                   </Col>
                   <Col md={6}>
-                    <Form.Group className='mt-2 text-center'>
+                    <Form.Group className="mt-2 text-start">
                       <Form.Label>Birth Place</Form.Label>
                       <Form.Control
-                        type='Text'
-                        id='birth_place'
-                        placeholder='Birth Place'
+                        type="Text"
+                        id="birth_place"
+                        placeholder="Birth Place"
                         required
-                        onChange={event => setbirth_place(event.target.value)} />
+                        onChange={(event) => setbirth_place(event.target.value)}
+                        disabled={loading}
+                      />
                     </Form.Group>
                   </Col>
                   <Col md={6}>
-                    <Form.Group className='mt-2 text-center'>
+                    <Form.Group className="mt-2 text-start">
                       <Form.Label>Birth Date</Form.Label>
                       <Form.Control
-                        type='date'
-                        id='birth_date'
-                        placeholder='Birth Date'
+                        type="date"
+                        id="birth_date"
+                        placeholder="Birth Date"
                         required
-                        onChange={event => setbirth_date(event.target.value)} />
+                        onChange={(event) => setbirth_date(event.target.value)}
+                        disabled={loading}
+                      />
                     </Form.Group>
                   </Col>
                   <Col md={6}>
-                    <Form.Group className='mt-2 text-center'>
-                      <Form.Label>gender</Form.Label>
+                    <Form.Group className="mt-2 text-start">
+                      <Form.Label>Gender</Form.Label>
                       <Form.Control
-                        type='text'
-                        id='gender'
-                        placeholder='gender'
+                        type="text"
+                        id="gender"
+                        placeholder="Gender"
                         required
-                        onChange={event => setgender(event.target.value)} />
+                        onChange={(event) => setgender(event.target.value)}
+                        disabled={loading}
+                      />
                     </Form.Group>
                   </Col>
                   <Col md={6}>
-                    <Form.Group className='mt-2 text-center'>
-                      <Form.Label>Dokter</Form.Label>
-                      <Form.Select type='text'
-                        id='dokter'
-                        placeholder='dokter'
-                        required
-                        onChange={event => setdokter(event.target.value)}>
-                        <option selected disabled>Choose Doctor</option>
-                        <option value="8">Budi Setiawan</option>
-
-                      </Form.Select>
-                    </Form.Group>
-
+                    <CustomListDropDown
+                      onChange={doctorDropdownEvent}
+                      isLoading={loading}
+                    />
                   </Col>
                   <Col md={6}>
-                    <Form.Group className='mt-2 text-center'>
-                      <Form.Label>Keluhan</Form.Label>
+                    <Form.Group className="mt-2 text-start">
+                      <Form.Label>Complaints</Form.Label>
                       <Form.Control
-                        as='textarea'
-                        id='keluhan'
-                        placeholder='keluhan'
+                        as="textarea"
+                        id="keluhan"
+                        placeholder="Complaints"
                         required
-                        onChange={event => setkeluhan(event.target.value)} />
+                        onChange={(event) => setcomplaints(event.target.value)}
+                        disabled={loading}
+                      />
                     </Form.Group>
                   </Col>
                   <Col md={12}>
-                    <Form.Group className='mt-2 text-center'>
+                    <Form.Group className="mt-2 text-start">
                       <Form.Label>Address</Form.Label>
                       <Form.Control
-                        as='textarea'
-                        id='address'
-                        placeholder='address'
+                        as="textarea"
+                        id="address"
+                        placeholder="Address  "
                         required
-                        onChange={event => setaddress(event.target.value)} />
+                        onChange={(event) => setaddress(event.target.value)}
+                        disabled={loading}
+                      />
                     </Form.Group>
                   </Col>
+                  <Form.Label> </Form.Label>
                   <Col md={12}>
-                    <div className='d-grid mt-2'>
-                      <Button type='submit' variant="dark"> Masuk </Button>
+                    <div className="d-grid mt-2">
+                      <Button type="submit" variant="dark" disabled={loading}>
+                        {loading ? (
+                          <Spinner
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          " "
+                        )}
+                        {loading ? "  Loading.." : "  Register"}
+                      </Button>
                     </div>
                   </Col>
                 </Row>
@@ -162,7 +180,7 @@ const RegisterPatient = () => {
         </Row>
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default RegisterPatient
+export default RegisterPatient;

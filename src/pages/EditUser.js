@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Container, Form, Row, Col, Image } from 'react-bootstrap';
+import { Button, Container, Form, Row, Col, Image, Spinner } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import api from '../lib/api';
@@ -15,6 +15,7 @@ const EditUser = () => {
   const [password, setpassword] = useState("");
   const [gender, setgender] = useState("");
   const [address, setaddress] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   // const dispatch = useDispatch();
 
@@ -31,8 +32,19 @@ const EditUser = () => {
         address: address
       });
       // dispatch(setToken(response.data.data))
-      navigate("/SuperAdmin");
-      console.log(response);
+      alert("Success Edited")
+      setLoading(false);
+      let role = response.data.data.role
+      console.log(response)
+      console.log(role)
+      const ls = require('localstorage-ttl')
+      ls.set('user', response.data.data);
+
+      if (role === "USER_TYPE_ADMIN") {
+        navigate("/SuperAdmin");
+      } else {
+        navigate("/Doctors");
+      }
     } catch (error) {
       alert("failed register");
     }
@@ -59,7 +71,8 @@ const EditUser = () => {
                         id='username'
                         placeholder='User Name'
                         required
-                        onChange={event => setusername(event.target.value)} />
+                        onChange={event => setusername(event.target.value)}
+                        disabled={loading} />
                     </Form.Group>
                   </Col>
                   <Col md={6}>
@@ -70,7 +83,8 @@ const EditUser = () => {
                         id='full_name'
                         placeholder='Full Name'
                         required
-                        onChange={event => setfull_name(event.target.value)} />
+                        onChange={event => setfull_name(event.target.value)}
+                        disabled={loading} />
                     </Form.Group>
                   </Col>
                   <Col md={6}>
@@ -81,7 +95,8 @@ const EditUser = () => {
                         id='age'
                         placeholder='Age'
                         required
-                        onChange={event => setage(event.target.value)} />
+                        onChange={event => setage(event.target.value)}
+                        disabled={loading} />
                     </Form.Group>
                   </Col>
                   <Col md={6}>
@@ -92,7 +107,8 @@ const EditUser = () => {
                         id='email'
                         placeholder='Email'
                         required
-                        onChange={event => setemail(event.target.value)} />
+                        onChange={event => setemail(event.target.value)}
+                        disabled={loading} />
                     </Form.Group>
                   </Col>
                   <Col md={6}>
@@ -103,7 +119,8 @@ const EditUser = () => {
                         id='password'
                         placeholder='Password'
                         required
-                        onChange={event => setpassword(event.target.value)} />
+                        onChange={event => setpassword(event.target.value)}
+                        disabled={loading} />
                     </Form.Group>
                   </Col>
                   <Col md={6}>
@@ -112,7 +129,8 @@ const EditUser = () => {
                       <Form.Select type='text'
                         id='gender'
                         required
-                        onChange={event => setgender(event.target.value)}>
+                        onChange={event => setgender(event.target.value)}
+                        disabled={loading}>
                         <option selected disabled>Choose your gender</option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
@@ -127,12 +145,26 @@ const EditUser = () => {
                         id='address'
                         placeholder='Address'
                         required
-                        onChange={event => setaddress(event.target.value)} />
+                        onChange={event => setaddress(event.target.value)}
+                        disabled={loading} />
                     </Form.Group>
                   </Col>
                   <Col md={12}>
-                    <div className='d-grid mt-2'>
-                      <Button type='submit' variant="dark"> Masuk </Button>
+                    <div className="d-grid mt-2">
+                      <Button type="submit" variant="dark" disabled={loading}>
+                        {loading ? (
+                          <Spinner
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          " "
+                        )}
+                        {loading ? "  Loading.." : "  Register"}
+                      </Button>
                     </div>
                   </Col>
                 </Row>

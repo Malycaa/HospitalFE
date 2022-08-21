@@ -12,6 +12,7 @@ import GivingTreatment from "./pages/GivingTreatment";
 import RegisterPatient from "./pages/RegisterPatient";
 import Doctors from "./pages/doctors";
 import RegisterAdmin from "./pages/RegisterAdmin";
+import EditUser from "./pages/EditUser";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
 
       {/* <Route path="/" element={<Navbarsuperadmin />} /> */}
       <Route path="/RegisterAdmin" element={<RegisterAdmin />} />
+      <Route path="/EditUser" element={<EditUser />} />
       <Route path="/doctors" element={<Doctors />} />
       <Route path="/RegisterDoctors" element={<RegisterDoctors />} />
       <Route path="/" element={<Home />} />

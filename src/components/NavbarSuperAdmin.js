@@ -8,7 +8,7 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { Link, useNavigate } from "react-router-dom";
 import icon from "../icon.png";
-import React from "react";
+import React, { useState } from "react";
 
 function logout() {
   const ls = require("localstorage-ttl");
@@ -18,16 +18,21 @@ function logout() {
   window.location.href = "/login";
 }
 
-// const logOut = () => {
-//   const navigate = useNavigate();
-//   const data = ls.get('user')
-//   ls.set('user', null);
-//   navigate('/login')
-// }
-
 const NavbarSuperAdmin = () => {
+  const [initial, setInitial] = useState("");
   const ls = require("localstorage-ttl");
   const data = ls.get("user");
+
+  setTimeout(
+    function () {
+      let rgx = new RegExp(/(\p{L}{1})\p{L}+/, "gu");
+      let x = [...data.full_name.matchAll(rgx)] || [];
+      x = ((x.shift()?.[1] || "") + (x.pop()?.[1] || "")).toUpperCase();
+      setInitial(x);
+    }.bind(this),
+    100
+  );
+
   return (
     <>
       {[false].map((expand) => (
@@ -41,13 +46,23 @@ const NavbarSuperAdmin = () => {
           <Container fluid>
             <Row>
               <Col>
-                <img src={icon} style={{ width: 45 }} alt="logo" />
+                {/* <img src={icon} style={{ width: 45 }} alt="logo" /> */}
+                <div
+                  style={{
+                    display: "flex",
+                    width: "50px",
+                    height: "50px",
+                    backgroundColor: "white",
+                    borderRadius: "50%",
+                  }}
+                >
+                  <h4 style={{ margin: "auto" }}>{initial}</h4>
+                </div>
               </Col>
               <Col>
-                <Navbar.Text href="#">{data.full_name}</Navbar.Text>
+                <Navbar.Brand href="/SuperAdmin">{data.full_name}</Navbar.Brand>
                 <br></br>
-                {/* <Navbar.Brand href="#">Super Admin</Navbar.Brand> */}
-                <label style={{ color: "white" }}>Admin</label>
+                <Navbar.Text href="/SuperAdmin">Admin</Navbar.Text>
               </Col>
             </Row>
 
@@ -59,7 +74,7 @@ const NavbarSuperAdmin = () => {
             >
               <Offcanvas.Header closeButton>
                 <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-                  Hospital
+                  Hospital - Center
                 </Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body>
@@ -71,7 +86,7 @@ const NavbarSuperAdmin = () => {
                     Register Doctor
                   </Nav.Link>
                   <Nav.Link href="/RegisterPatient" style={{ color: "black" }}>
-                    Register Pasien
+                    Register Patient
                   </Nav.Link>
                   <Nav.Link href="#action2" onClick={logout}>
                     Log Out

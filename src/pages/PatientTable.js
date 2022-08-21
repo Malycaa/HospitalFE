@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
 import NavbarDoctors from '../components/NavbarDoctors';
+import { useNavigate } from 'react-router-dom'
 import api from '../lib/api';
+import Modal from 'react-bootstrap/Modal';
+import ViewPatient from './ViewPatient';
 
 export default class PatientTable extends React.Component {
   constructor() {
@@ -10,19 +13,26 @@ export default class PatientTable extends React.Component {
     this.state = {
       data: [],
       patient_name: '',
-      loading: false
+      loading: false,
+      id: 0,
+      modalShow: false
+
     }
   }
 
   componentDidMount = async () => {
     this.getPatientData()
   };
+  modalAction = (x) => {
+    this.setState({ id: x })
+    this.setState({ modalShow: true })
+  }
 
   // const[patient_name, setpatient_name] = useState("")
   // const[data, setdata] = useState([])
   // const[loading, setloading] = useState(false)
-
   getPatientData = async () => {
+
     try {
       this.setState({ loading: true })
       const ls = require('localstorage-ttl')
@@ -76,13 +86,21 @@ export default class PatientTable extends React.Component {
                 <td>{el.patient_name}</td>
                 <td>{el.gender}</td>
                 <td>{el.complaints}</td>
-                <td><Button>view</Button></td>
+                <td>
+                  <Button onClick={() => this.modalAction(el.patient_id)}></Button>
+                  {/* <Button onClick={() => { window.location.href = `/ViewPatient/${el.patient_id}` }} >View</Button> */}
+                </td>
               </tr>
             ))}
 
 
           </tbody>
         </Table>
+        <ViewPatient
+          patient_id={this.state.id}
+          show={this.state.modalShow}
+          onHide={() => this.setState({ modalShow: false })}
+        />
       </>
     )
   }

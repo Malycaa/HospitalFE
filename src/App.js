@@ -13,12 +13,14 @@ import RegisterPatient from "./pages/RegisterPatient";
 import Doctors from "./pages/doctors";
 import RegisterAdmin from "./pages/RegisterAdmin";
 import EditUser from "./pages/EditUser";
+import PatientTable from "./pages/PatientTable";
 
 function App() {
   return (
     <Routes>
 
       {/* <Route path="/" element={<Navbarsuperadmin />} /> */}
+      <Route path="/PatientTable" element={<PatientTable />} />
       <Route path="/RegisterAdmin" element={<RegisterAdmin />} />
       <Route path="/EditUser" element={<EditUser />} />
       <Route path="/doctors" element={<Doctors />} />

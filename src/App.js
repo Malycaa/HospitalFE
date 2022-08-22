@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, withRouter } from "react-router-dom";
 // import Navbar from "./components/Navbar";
 import CreateProduct from "./pages/CreateProduct";
 import Home from "./pages/Home";
@@ -15,12 +15,14 @@ import RegisterAdmin from "./pages/RegisterAdmin";
 import EditUser from "./pages/EditUser";
 import PatientTable from "./pages/PatientTable";
 import PatientReportTable from "./pages/PatientReportTable";
+import ViewPatient from "./pages/ViewPatient";
 
 function App() {
   return (
     <Routes>
 
       {/* <Route path="/" element={<Navbarsuperadmin />} /> */}
+      <Route path="/ViewPatient/:patient_id" element={<ViewPatient />} />
       <Route path="/PatientTable" element={<PatientTable />} />
       <Route path="/RegisterAdmin" element={<RegisterAdmin />} />
       <Route path="/EditUser" element={<EditUser />} />

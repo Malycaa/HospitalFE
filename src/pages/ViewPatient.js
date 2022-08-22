@@ -146,9 +146,13 @@ const ViewPatient = (props) => {
         <Modal.Footer>
           {!loading ? (
             <div>
-              <Button onClick={props.onHide}>Close</Button>
+              <Button className="bg-dark text-white" 
+              style={{ borderColor: "white" }}
+              onClick={props.onHide}>Close</Button>
               &nbsp;&nbsp;&nbsp;
-              <Button onClick={props.onHide}>Add Treatment</Button>
+              <Button className="bg-dark text-white" 
+              style={{ borderColor: "white" }}
+              onClick={props.onHide}>Add Treatment</Button>
             </div>
           ) : null}
         </Modal.Footer>

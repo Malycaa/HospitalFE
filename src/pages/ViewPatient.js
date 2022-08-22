@@ -1,70 +1,160 @@
-import React, { useEffect, useState } from 'react';
-import Modal from 'react-bootstrap/Modal';
-import { useParams } from 'react-router-dom'
-import api from '../lib/api';
-import { Button } from 'react-bootstrap';
+import React, { useEffect, useState } from "react";
+import Modal from "react-bootstrap/Modal";
+import { useParams } from "react-router-dom";
+import api from "../lib/api";
+import { Button, Container, Form, Row, Col, Spinner } from "react-bootstrap";
 
 const ViewPatient = (props) => {
-  const [patient_name, setpatient_name] = useState("");
-  const [birth_place, setbirth_place] = useState("");
-  const [birth_date, setbirth_date] = useState("");
-  const [address, setaddress] = useState("");
-  const [gender, setgender] = useState("");
-  const [complaints, setcomplaints] = useState("");
-  const [data, setdata] = useState({})
-  const [loading, setloading] = useState(true)
-  const params = useParams()
+  const [data, setdata] = useState({});
+  const [loading, setloading] = useState(false);
+
   const getData = async () => {
     try {
-      setloading(true)
-      const url = `/api/patient/getPatientById/${props.patient_id}`
-      const response = await api.get(url)
-      setdata(response.data.data)
-      setpatient_name(response.data.data.patient_name)
-      setloading(false)
+      const url = `/api/patient/getPatientById/${props.patient_id}`;
+      setloading(true);
+      await api.get(url).then((result) => {
+        setdata(result.data.data);
+        setloading(false);
+      });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
+
   useEffect(() => {
-    getData()
-  })
-  // useEffect(() => {
-  //   console.log(para)
-  // });
-  if (loading) {
-    return <Modal></Modal>
-  } else {
-    return (
-      <>
-        <Modal
-          {...props}
-          size="lg"
-          aria-labelledby="contained-modal-title-vcenter"
-          centered
-        >
-          <Modal.Header closeButton>
-            <Modal.Title id="contained-modal-title-vcenter">
-              Giving Treatment
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <h4>{patient_name}</h4>
-            <p>
-              Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-              dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-              consectetur ac, vestibulum at eros.
-            </p>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={props.onHide}>Close</Button>
-          </Modal.Footer>
-        </Modal>
+    if (props.show) {
+      getData();
+    }
+  }, [props.show]);
 
-      </>
-    )
-  }
+  return (
+    <>
+      <Modal
+        {...props}
+        // show={props.show}
+        // size="sm"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Patient Detail
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {!loading ? (
+            <Container className="text-center">
+              <Row>
+                <Col md={6}>
+                  <Form.Group className="mt-2 text-start">
+                    <Form.Label>Patient Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      id="username"
+                      placeholder="Username"
+                      value={data.patient_name ?? ""}
+                      required
+                      disabled
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group className="mt-2 text-start">
+                    <Form.Label>Gender</Form.Label>
+                    <Form.Control
+                      type="text"
+                      id="username"
+                      placeholder="Username"
+                      value={data.gender ?? ""}
+                      required
+                      disabled
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={6}>
+                  <Form.Group className="mt-2 text-start">
+                    <Form.Label>Birth Place</Form.Label>
+                    <Form.Control
+                      type="text"
+                      id="username"
+                      placeholder="Username"
+                      value={data.birth_place ?? ""}
+                      required
+                      disabled
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group className="mt-2 text-start">
+                    <Form.Label>Birth Date</Form.Label>
+                    <Form.Control
+                      type="text"
+                      id="username"
+                      placeholder="Username"
+                      value={data.birth_date ?? ""}
+                      required
+                      disabled
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={12}>
+                  <Form.Group className="mt-2 text-start">
+                    <Form.Label>Address</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      id="username"
+                      placeholder="Username"
+                      value={data.address ?? ""}
+                      required
+                      disabled
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={12}>
+                  <Form.Group className="mt-2 text-start">
+                    <Form.Label>Complaints</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      id="username"
+                      placeholder="Username"
+                      value={data.complaints ?? ""}
+                      required
+                      disabled
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Container>
+          ) : (
+            <Container className="text-center">
+              <Spinner
+                as="span"
+                animation="border"
+                size="lg"
+                role="status"
+                aria-hidden="true"
+              />
+            </Container>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          {!loading ? (
+            <div>
+              <Button onClick={props.onHide}>Close</Button>
+              &nbsp;&nbsp;&nbsp;
+              <Button onClick={props.onHide}>Add Treatment</Button>
+            </div>
+          ) : null}
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
+};
 
-}
-
-export default ViewPatient
+export default ViewPatient;

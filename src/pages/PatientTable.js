@@ -1,110 +1,126 @@
-import React, { useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
-import Table from 'react-bootstrap/Table';
-import NavbarDoctors from '../components/NavbarDoctors';
-import { useNavigate } from 'react-router-dom'
-import api from '../lib/api';
-import Modal from 'react-bootstrap/Modal';
-import ViewPatient from './ViewPatient';
+import React, { useEffect, useState } from "react";
+import { Button, Form, Container, Card, Spinner } from "react-bootstrap";
+import Table from "react-bootstrap/Table";
+import NavbarDoctors from "../components/NavbarDoctors";
+import api from "../lib/api";
+import ViewPatient from "./ViewPatient";
 
-export default class PatientTable extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      data: [],
-      patient_name: '',
-      loading: false,
-      id: 0,
-      modalShow: false
+const PatientTable = () => {
+  const [getSearch, setSearch] = useState("");
+  const [getLoading, setLoading] = useState(false);
+  const [getData, setData] = useState([]);
+  const [getSelectedId, setSelectedId] = useState(0);
+  const [getModalShow, setModalShow] = useState(false);
+  const [getInit, setInit] = useState(true);
 
-    }
-  }
-
-  componentDidMount = async () => {
-    this.getPatientData()
-  };
-  modalAction = (x) => {
-    this.setState({ id: x })
-    this.setState({ modalShow: true })
-  }
-
-  // const[patient_name, setpatient_name] = useState("")
-  // const[data, setdata] = useState([])
-  // const[loading, setloading] = useState(false)
-  getPatientData = async () => {
-
+  const getPatientData = async () => {
     try {
-      this.setState({ loading: true })
-      const ls = require('localstorage-ttl')
-      const data = ls.get('user')
+      setLoading(true);
+      const ls = require("localstorage-ttl");
+      const data = ls.get("user");
       const url = `/api/patient/inquiryPatient`;
-      const response = await api.post(url, {
-        patient_name: this.state.patient_name,
-        user_id: data.user_id
-
-      }).then((result) => {
-        this.setState({
-          data: result.data.data
-        }, () => {
-          console.log('new state', this.state.data);
-          this.setState({ loading: false })
+      await api
+        .post(url, {
+          patient_name: getSearch,
+          user_id: data.user_id,
         })
-
-      });
+        .then((result) => {
+          setData([...result.data.data]);
+          setLoading(false);
+        });
     } catch (error) {
-      alert(error)
+      alert(error);
     }
-  }
-  render() {
-    return (
-      <>
+  };
 
-        <NavbarDoctors />
-        <Form className="d-flex w-25" >
+  const modalAction = (x) => {
+    console.log("masok");
+    setSelectedId(x);
+    setTimeout(() => {
+      setModalShow(true);
+    }, 100);
+  };
+
+  useEffect(() => {
+    if (getInit) {
+      getPatientData();
+      setInit(false);
+    }
+  }, []);
+
+  return (
+    <>
+      <NavbarDoctors />
+      <div style={{ height: "80vh", paddingLeft:20, paddingRight:20 }}>
+        <Form className="d-flex w-50">
           <Form.Control
             type="search"
             placeholder="Search"
             className="me-2"
             aria-label="Search"
-            onChange={event => this.setState({ patient_name: event.target.value })}
+            onChange={(event) => setSearch(event.target.value)}
           />
-          <Button variant="dark" onClick={this.getPatientData}>Search</Button>
+          <Button variant="dark" onClick={getPatientData}>
+            Search
+          </Button>
         </Form>
         <br></br>
-        <Table striped bordered hover variant="dark" >
-          <thead>
-            <tr>
-              <th>Patient Name</th>
-              <th>Gender</th>
-              <th>Complaints</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.state.data.map((el, index) => (
-              <tr key={index}>
-                <td>{el.patient_name}</td>
-                <td>{el.gender}</td>
-                <td>{el.complaints}</td>
-                <td>
-                  <Button onClick={() => this.modalAction(el.patient_id)}></Button>
-                  {/* <Button onClick={() => { window.location.href = `/ViewPatient/${el.patient_id}` }} >View</Button> */}
-                </td>
-              </tr>
-            ))}
-
-
-          </tbody>
-        </Table>
+        {!getLoading ? (
+          <Card body className="bg-dark">
+            <Table
+              // striped
+              // bordered
+              hover
+              variant="dark"
+              className="text-center"
+            >
+              <thead>
+                <tr>
+                  <th style={{ paddingBottom: 17 }}>Patient Name</th>
+                  <th style={{ paddingBottom: 17 }}>Gender</th>
+                  <th style={{ paddingBottom: 17 }}>Complaints</th>
+                  <th style={{ paddingBottom: 17 }}>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {getData.map((el, index) => (
+                  <tr key={index}>
+                    <td style={{ paddingTop: 14 }}>{el.patient_name}</td>
+                    <td style={{ paddingTop: 14 }}>{el.gender}</td>
+                    <td style={{ paddingTop: 14 }}>{el.complaints}</td>
+                    <td>
+                      <Button
+                        className="bg-white text-dark"
+                        style={{ borderColor: "white" }}
+                        onClick={() => modalAction(el.patient_id)}
+                      >
+                        View
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </Card>
+        ) : (
+          <Container className="text-center" style={{ paddingTop: 70 }}>
+            <Spinner
+              as="span"
+              animation="border"
+              size="lg"
+              role="status"
+              aria-hidden="true"
+            />
+          </Container>
+        )}
         <ViewPatient
-          patient_id={this.state.id}
-          show={this.state.modalShow}
-          onHide={() => this.setState({ modalShow: false })}
+          patient_id={getSelectedId}
+          show={getModalShow}
+          onHide={() => setModalShow(false)}
         />
-      </>
-    )
-  }
+      </div>
+    </>
+  );
+};
 
-
-
-}
+export default PatientTable;

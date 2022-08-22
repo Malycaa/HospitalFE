@@ -14,8 +14,8 @@ import Doctors from "./pages/doctors";
 import RegisterAdmin from "./pages/RegisterAdmin";
 import EditUser from "./pages/EditUser";
 import PatientTable from "./pages/PatientTable";
-import PatientReportTable from "./pages/PatientReportTable";
 import ViewPatient from "./pages/ViewPatient";
+import PatientReportTable from "./pages/PatientReportTable";
 
 function App() {
   return (

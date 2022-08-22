@@ -5,13 +5,13 @@ import { Button, Container, Form, Row, Col, Image } from "react-bootstrap";
 export const CustomDropdown = (props) => (
   <div className="form-group">
     <select
-      className="form-control"
+      class="form-select"
       name="{props.username}"
       disabled={props.isLoading}
       onChange={props.onChange}
     >
-      <option defaultValue>
-        {props.options.length !== 0 ? "Select" : "Loading.."}
+      <option selected disabled>
+        {props.options.length !== 0 ? "Select Doctor" : "Loading.."}
       </option>
       {props.options.length !== 0 ? (
         props.options.map((item, index) => (

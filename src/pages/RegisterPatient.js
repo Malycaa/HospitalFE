@@ -34,11 +34,11 @@ const RegisterPatient = () => {
         gender: gender,
         complaints: complaints,
       });
-      alert("Success Registering Patient")
+      alert("Success Registering Patient");
       setLoading(false);
-      navigate('/superadmin')
+      navigate("/superadmin");
     } catch (error) {
-      alert("failed register");
+      alert("Failed Registering Patient");
     }
   };
 
@@ -62,9 +62,12 @@ const RegisterPatient = () => {
                   handleSubmit();
                 }}
               >
+                <Col md={6}>
+                  <h3>Register Patient</h3>
+                </Col>
                 <Row>
                   <Col md={6}>
-                    <Form.Group className="mt-2 text-start">
+                    <Form.Group className="mt-2 c">
                       <Form.Label>Full Name</Form.Label>
                       <Form.Control
                         type="text"
@@ -76,6 +79,18 @@ const RegisterPatient = () => {
                         }
                         disabled={loading}
                       />
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group className="mt-2 text-start">
+                      <Form.Label>Gender</Form.Label>
+                      <select class="form-select" aria-label="">
+                        <option selected disabled>
+                          Select Gender
+                        </option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                      </select>
                     </Form.Group>
                   </Col>
                   <Col md={6}>
@@ -104,19 +119,7 @@ const RegisterPatient = () => {
                       />
                     </Form.Group>
                   </Col>
-                  <Col md={6}>
-                    <Form.Group className="mt-2 text-start">
-                      <Form.Label>Gender</Form.Label>
-                      <Form.Control
-                        type="text"
-                        id="gender"
-                        placeholder="Gender"
-                        required
-                        onChange={(event) => setgender(event.target.value)}
-                        disabled={loading}
-                      />
-                    </Form.Group>
-                  </Col>
+
                   <Col md={6}>
                     <CustomListDropDown
                       onChange={doctorDropdownEvent}

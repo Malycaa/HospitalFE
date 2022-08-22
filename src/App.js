@@ -14,6 +14,7 @@ import Doctors from "./pages/doctors";
 import RegisterAdmin from "./pages/RegisterAdmin";
 import EditUser from "./pages/EditUser";
 import PatientTable from "./pages/PatientTable";
+import PatientReportTable from "./pages/PatientReportTable";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
       <Route path="/superadmin" element={<SuperAdmin />} />
       <Route path="/RegisterPatient" element={<RegisterPatient />} />
       <Route path="/givingtreatment" element={<GivingTreatment />} />
+      <Route path="/PatientReportTable" element={<PatientReportTable />} />
       <Route path="/" element={<SecurePage />} >
         <Route path="create-product" element={<CreateProduct />} />
       </Route>

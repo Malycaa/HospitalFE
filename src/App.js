@@ -17,6 +17,7 @@ import PatientTable from "./pages/PatientTable";
 import ViewPatient from "./pages/ViewPatient";
 import PatientReportTable from "./pages/PatientReportTable";
 
+
 function App() {
   return (
     <Routes>
@@ -35,7 +36,7 @@ function App() {
       <Route path="/superadmin" element={<SuperAdmin />} />
       <Route path="/RegisterPatient" element={<RegisterPatient />} />
       <Route path="/givingtreatment" element={<GivingTreatment />} />
-      <Route path="/PatientReportTable" element={<PatientReportTable />} />
+      <Route path="/patientreporttable" element={<PatientReportTable />} />
       <Route path="/" element={<SecurePage />} >
         <Route path="create-product" element={<CreateProduct />} />
       </Route>

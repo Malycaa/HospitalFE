@@ -146,13 +146,23 @@ const ViewPatient = (props) => {
         <Modal.Footer>
           {!loading ? (
             <div>
-              <Button className="bg-dark text-white"
+              <Button
+                className="bg-dark text-white"
                 style={{ borderColor: "white" }}
-                onClick={props.onHide}>Close</Button>
-
-              <Button className="bg-dark text-white"
+                onClick={props.onHide}
+              >
+                Close
+              </Button>
+              &nbsp;&nbsp;&nbsp;
+              <Button
+                className="bg-dark text-white"
                 style={{ borderColor: "white" }}
-              ><Link to={`/givingtreatment/${data.patient_id}`}> Add Treatment</Link></Button>
+              >
+                <Link to={`/givingtreatment/${data.patient_id}`}>
+                  {" "}
+                  Add Treatment
+                </Link>
+              </Button>
             </div>
           ) : null}
         </Modal.Footer>

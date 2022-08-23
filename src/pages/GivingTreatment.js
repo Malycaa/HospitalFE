@@ -28,7 +28,6 @@ const GivingTreatment = () => {
       const url = `/api/treatment/addTreatment`;
       for (let i = 0; i < medications.length; i++) {
         if (medications[i].medication_id === 0) {
-
           isValid = false
           break
         }

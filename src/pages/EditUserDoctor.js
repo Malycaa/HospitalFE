@@ -27,13 +27,13 @@ const EditUser = () => {
       const url = `/api/account/updateDoctor`;
       const response = await api.put(url, {
         user_id: data.user_id,
-        username: username === '' ? data.username : username,
-        full_name: full_name === '' ? data.full_name : full_name,
-        age: age === '' ? data.age : age,
-        email: email === '' ? data.email : email,
-        password: password === '' ? data.password : password,
-        gender: gender === '' ? data.gender : gender,
-        address: address === '' ? data.address : address,
+        username: !username?.length ? data.username : username,
+        full_name: !full_name?.length ? data.full_name : full_name,
+        age: !age?.length ? data.age : age,
+        email: !email?.length ? data.email : email,
+        password: !password?.length ? data.password : password,
+        gender: !gender?.length ? data.gender : gender,
+        address: !address?.length ? data.address : address
       });
       const user = response.data.data
       // dispatch(setToken(response.data.data))
@@ -72,7 +72,7 @@ const EditUser = () => {
                         type='text'
                         id='username'
                         placeholder='User Name'
-                        defaultValue={data.username ?? ''}
+                        Value={data.username ?? ''}
                         required
                         onChange={event => setusername(event.target.value)}
                         disabled={loading} />

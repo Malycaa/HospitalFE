@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import api from "../lib/api";
 import { Button, Container, Form, Row, Col, Spinner } from "react-bootstrap";
 
@@ -146,13 +146,13 @@ const ViewPatient = (props) => {
         <Modal.Footer>
           {!loading ? (
             <div>
-              <Button className="bg-dark text-white" 
-              style={{ borderColor: "white" }}
-              onClick={props.onHide}>Close</Button>
-              &nbsp;&nbsp;&nbsp;
-              <Button className="bg-dark text-white" 
-              style={{ borderColor: "white" }}
-              onClick={props.onHide}>Add Treatment</Button>
+              <Button className="bg-dark text-white"
+                style={{ borderColor: "white" }}
+                onClick={props.onHide}>Close</Button>
+
+              <Button className="bg-dark text-white"
+                style={{ borderColor: "white" }}
+              ><Link to={`/givingtreatment`}> Add Treatment</Link></Button>
             </div>
           ) : null}
         </Modal.Footer>

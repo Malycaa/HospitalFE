@@ -152,7 +152,7 @@ const ViewPatient = (props) => {
 
               <Button className="bg-dark text-white"
                 style={{ borderColor: "white" }}
-              ><Link to={`/givingtreatment`}> Add Treatment</Link></Button>
+              ><Link to={`/givingtreatment/${data.patient_id}`}> Add Treatment</Link></Button>
             </div>
           ) : null}
         </Modal.Footer>

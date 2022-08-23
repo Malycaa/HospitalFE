@@ -1,51 +1,79 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Container, Form, Row, Col, Spinner } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import api from "../lib/api";
 import { setToken } from "../reducers/token-store";
 import register from "../register.jpg";
-import NavbarSuperAdmin from "../components/NavbarSuperAdmin";
+import NavbarDoctors from "../components/NavbarDoctors";
 import CustomListDropDown from "./DropDown";
 import CustomListDropDownMedication from "./DropDownMedication";
 // import { CustomListDropDown } from './DropDown';
 
 const GivingTreatment = () => {
+  const [user_id, setuser_id] = useState("")
   const [sickness, setsickness] = useState("")
   const [sickness_desc, setsickness_desc] = useState("")
   const [sickness_handling, setsickness_handling] = useState("")
-  const [createTime, setcreateTime] = useState("")
-  const [medications, setmedications] = useState([{}])
+  const [medications, setmedications] = useState([{ index: 0, medication_id: 0 }])
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { patient_id } = useParams()
 
   const handleSubmit = async () => {
     try {
-      setLoading(true);
+
+      let isValid = true
       const url = `/api/treatment/addTreatment`;
-      const response = await api.post(url, {
-        sickness: sickness,
-        sickness_desc: sickness_desc,
-        sickness_handling: sickness_handling,
-        createTime: createTime,
-        medications: medications
-      });
-      alert("Success Registering Patient");
-      setLoading(false);
-      navigate("/superadmin");
+      for (let i = 0; i < medications.length; i++) {
+        if (medications[i].medication_id === 0) {
+
+          isValid = false
+          break
+        }
+      }
+      if (isValid) {
+        setLoading(true);
+        await api.post(url, {
+          patient_id: patient_id,
+          sickness: sickness,
+          sickness_desc: sickness_desc,
+          sickness_handling: sickness_handling,
+          medications: medications
+        });
+        alert("Success Register Treatment");
+        setLoading(false);
+        navigate("/doctors");
+      } else {
+        alert('please fill the medication')
+      }
+
     } catch (error) {
-      alert("Failed Registering Patient");
+      alert("Failed Registering Treatment");
     }
   };
 
+  const addMedicationEvent = (el) => {
+    const index = medications.length
+    console.log(medications.length)
+    setmedications(medications.concat({ index: index, medication_id: 0 }))
+  }
+
   const medicationDropdownEvent = (item) => {
-    setuser_id(item.medication_id);
+    console.log(item.index)
+    medications[item.index].medication_id = item.medication_id
+
   };
+  useEffect(() => {
+    console.log(patient_id)
+
+  }, [])
+
 
   return (
     <>
-      <NavbarSuperAdmin />
+      <NavbarDoctors />
       <Container>
         <Row>
           <Col md={5} style={{ height: "80vh" }}>
@@ -72,7 +100,7 @@ const GivingTreatment = () => {
                         placeholder="Sickness"
                         required
                         onChange={(event) =>
-                          setpatient_name(event.target.value)
+                          setsickness(event.target.value)
                         }
                         disabled={loading}
                       />
@@ -93,7 +121,7 @@ const GivingTreatment = () => {
                       />
                     </Form.Group>
                   </Col>
-                  <Col md={6}>
+                  <Col md={12}>
                     <Form.Group className="mt-2 text-start">
                       <Form.Label>Sickness Handler</Form.Label>
                       <Form.Control
@@ -106,26 +134,33 @@ const GivingTreatment = () => {
                       />
                     </Form.Group>
                   </Col>
-                  <Col md={6}>
-                    <Form.Group className="mt-2 text-start">
-                      <Form.Label>Created Time</Form.Label>
-                      <Form.Control
-                        type="text"
-                        id="createdTime"
-                        placeholder="CreatedTime"
-                        required
-                        onChange={(event) => setcreateTime(event.target.value)}
-                        disabled={loading}
-                      />
-                    </Form.Group>
-                  </Col>
+                  <Form.Group className="mt-2 text-start">
 
-                  <Col md={12}>
+                    <Form.Label style={{ paddingTop: 5, paddingRight: 17 }}>Medications</Form.Label>
+                    {/* &nbsp;&nbsp;&nbsp; */}
+                    <Button variant='dark' onClick={addMedicationEvent}>+</Button>
+                    <hr></hr>
+
+                    {medications.map((el, index) => (
+                      <Col md={12} key={el.index}>
+                        <CustomListDropDownMedication
+                          onChange={medicationDropdownEvent}
+                          tapAdd={addMedicationEvent}
+                          isLoading={loading}
+                          index={el.index}
+                        />
+                      </Col>
+                    ))}
+                  </Form.Group>
+
+                  {/* <Col md={12}>
                     <CustomListDropDownMedication
+
                       onChange={medicationDropdownEvent}
                       isLoading={loading}
                     />
-                  </Col>
+                  </Col> */}
+
                   <Col md={12}>
                     <div className="d-grid mt-2">
                       <Button type="submit" variant="dark" disabled={loading}>

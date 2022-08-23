@@ -45,6 +45,7 @@ export default class CustomListDropDownMedication extends React.Component {
 
   onChange = (event) => {
     var item = JSON.parse(event.target.value);
+    item.index = this.props.index
     this.setState({ value: item });
     this.props.onChange(item);
   };
@@ -53,13 +54,21 @@ export default class CustomListDropDownMedication extends React.Component {
     console.log(this.props.isLoading);
     return (
       <Form.Group className="mt-2 text-start">
-        <Form.Label>Medications</Form.Label>
         <DropDownMedication
           name={this.state.medication_name}
           options={this.state.collection}
           onChange={this.onChange}
           isLoading={this.props.isLoading}
         />
+        {/* <Row>
+          <Col md={8}>
+          </Col>
+          <Col md={4}>
+            <Button onClick={this.props.tapAdd}>+</Button>
+          </Col>
+
+        </Row> */}
+
       </Form.Group>
     );
   }

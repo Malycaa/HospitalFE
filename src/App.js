@@ -12,7 +12,7 @@ import GivingTreatment from "./pages/GivingTreatment";
 import RegisterPatient from "./pages/RegisterPatient";
 import Doctors from "./pages/doctors";
 import RegisterAdmin from "./pages/RegisterAdmin";
-import EditUser from "./pages/EditUser";
+import EditUserDoctor from "./pages/EditUserDoctor";
 import PatientTable from "./pages/PatientTable";
 import ViewPatient from "./pages/ViewPatient";
 import PatientReportTable from "./pages/PatientReportTable";
@@ -26,7 +26,7 @@ function App() {
       <Route path="/ViewPatient/:patient_id" element={<ViewPatient />} />
       <Route path="/PatientTable" element={<PatientTable />} />
       <Route path="/RegisterAdmin" element={<RegisterAdmin />} />
-      <Route path="/EditUser" element={<EditUser />} />
+      <Route path="/EditUserDoctor" element={<EditUserDoctor />} />
       <Route path="/doctors" element={<Doctors />} />
       <Route path="/RegisterDoctors" element={<RegisterDoctors />} />
       <Route path="/" element={<Home />} />
@@ -35,7 +35,7 @@ function App() {
       <Route path="/products" element={<Products />} />
       <Route path="/superadmin" element={<SuperAdmin />} />
       <Route path="/RegisterPatient" element={<RegisterPatient />} />
-      <Route path="/givingtreatment" element={<GivingTreatment />} />
+      <Route path="/givingtreatment/:patient_id" element={<GivingTreatment />} />
       <Route path="/patientreporttable" element={<PatientReportTable />} />
       <Route path="/" element={<SecurePage />} >
         <Route path="create-product" element={<CreateProduct />} />

@@ -68,7 +68,7 @@ const LoginPage = () => {
                                 type='password'
                                 id='password'
                                 placeholder='Input Password'
-                                required
+                                // required
                                 onChange={event => setPassword(event.target.value)} />
                         </Form.Group>
                         <div className='d-grid mt-2'>

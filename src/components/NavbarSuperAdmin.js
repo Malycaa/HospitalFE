@@ -60,7 +60,7 @@ const NavbarSuperAdmin = () => {
                 </div>
               </Col>
               <Col>
-                <Navbar.Brand href="/EditUser">{data.full_name}</Navbar.Brand>
+                <Navbar.Brand href="/superAdmin">{data.full_name}</Navbar.Brand>
                 <br></br>
                 <Navbar.Text href="/SuperAdmin">Admin</Navbar.Text>
               </Col>

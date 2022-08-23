@@ -1,15 +1,22 @@
-import React, { useState, useEffect } from 'react'
-import { Button, Container, Form, Row, Col, Image, Spinner } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import api from '../lib/api';
-import { setToken } from '../reducers/token-store';
-import register from '../register.jpg'
-import NavbarDoctor from '../components/NavbarDoctors';
-
+import React, { useState, useEffect } from "react";
+import {
+  Button,
+  Container,
+  Form,
+  Row,
+  Col,
+  Image,
+  Spinner,
+} from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import api from "../lib/api";
+import { setToken } from "../reducers/token-store";
+import register from "../register.jpg";
+import NavbarDoctor from "../components/NavbarDoctors";
 
 const EditUser = () => {
-  const [data, setdata] = useState({})
+  const [data, setdata] = useState({});
   const [username, setusername] = useState("");
   const [full_name, setfull_name] = useState("");
   const [age, setage] = useState("");
@@ -19,140 +26,168 @@ const EditUser = () => {
   const [address, setaddress] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const ls = require("localstorage-ttl");
+
   // const dispatch = useDispatch();
 
   const handleSubmit = async () => {
     try {
-
+      setLoading(true);
       const url = `/api/account/updateDoctor`;
       const response = await api.put(url, {
         user_id: data.user_id,
-        username: !username?.length ? data.username : username,
-        full_name: !full_name?.length ? data.full_name : full_name,
-        age: !age?.length ? data.age : age,
-        email: !email?.length ? data.email : email,
-        password: !password?.length ? data.password : password,
-        gender: !gender?.length ? data.gender : gender,
-        address: !address?.length ? data.address : address
+        username: username,
+        full_name: full_name,
+        age: age,
+        email: email,
+        password: password,
+        gender: gender,
+        address: address,
       });
-      const user = response.data.data
-      // dispatch(setToken(response.data.data))
-      alert("Success Edited")
-      setLoading(false);
-      navigate("/Doctors");
+      if (response.status !== 200) {
+        alert("Update Failed");
+        setLoading(false);
+      } else {
+        ls.set("user", response.data.data);
+        alert("Success Edited");
+        setLoading(false);
+        navigate("/doctors");
+      }
     } catch (error) {
-      alert("failed register");
+      alert("Update Failed");
     }
-
-  }
+  };
   useEffect(() => {
-    const ls = require('localstorage-ttl')
-    const storage = ls.get('user');
-    setdata(storage)
-  }, [])
-
+    const storage = ls.get("user");
+    setusername(storage.username);
+    setfull_name(storage.full_name);
+    setage(storage.age);
+    setemail(storage.email);
+    setpassword(storage.password);
+    setgender(storage.gender);
+    setaddress(storage.address);
+    setdata(storage);
+  }, []);
 
   return (
     <>
       <NavbarDoctor />
       <Container>
         <Row>
-          <Col md={5} style={{ height: '80vh' }}>
+          <Col md={5} style={{ height: "80vh" }}>
             <Container className="h-100 d-flex align-items-center justify-content-center w-100">
               <Form
-                action=''
-                method='PUT'
-                encType=''
-                onSubmit={(event) => { event.preventDefault(); handleSubmit() }}>
+                action=""
+                method="PUT"
+                encType=""
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  handleSubmit();
+                }}
+              >
+                <Col md={6}>
+                  <h3>Update Profile</h3>
+                </Col>
                 <Row>
                   <Col md={6}>
-                    <Form.Group className='mt-2 '>
+                    <Form.Group className="mt-2 ">
                       <Form.Label>Username</Form.Label>
                       <Form.Control
-                        type='text'
-                        id='username'
-                        placeholder='User Name'
-                        Value={data.username ?? ''}
+                        type="text"
+                        id="username"
+                        placeholder="User Name"
+                        defaultValue={username}
                         required
-                        onChange={event => setusername(event.target.value)}
-                        disabled={loading} />
+                        onChange={(event) => setusername(event.target.value)}
+                        disabled={loading}
+                      />
                     </Form.Group>
                   </Col>
                   <Col md={6}>
-                    <Form.Group className='mt-2 '>
+                    <Form.Group className="mt-2 ">
                       <Form.Label>Full Name</Form.Label>
                       <Form.Control
-                        type='text'
-                        id='full_name'
-                        placeholder='Full Name'
-                        defaultValue={data.full_name}
+                        type="text"
+                        id="full_name"
+                        placeholder="Full Name"
+                        defaultValue={full_name}
                         required
-                        onChange={event => setfull_name(event.target.value)}
-                        disabled={loading} />
+                        onChange={(event) => setfull_name(event.target.value)}
+                        disabled={loading}
+                      />
                     </Form.Group>
                   </Col>
                   <Col md={6}>
-                    <Form.Group className='mt-2 '>
+                    <Form.Group className="mt-2 ">
                       <Form.Label>Age</Form.Label>
                       <Form.Control
-                        type='text'
-                        id='age'
-                        placeholder='Age'
-                        defaultValue={data.age}
+                        type="text"
+                        id="age"
+                        placeholder="Age"
+                        defaultValue={age}
                         required
-                        onChange={event => setage(event.target.value)}
-                        disabled={loading} />
+                        onChange={(event) => setage(event.target.value)}
+                        disabled={loading}
+                      />
                     </Form.Group>
                   </Col>
                   <Col md={6}>
-                    <Form.Group className='mt-2 '>
+                    <Form.Group className="mt-2 ">
                       <Form.Label>Email</Form.Label>
                       <Form.Control
-                        type='email'
-                        id='email'
-                        placeholder='Email'
-                        defaultValue={data.email}
+                        type="email"
+                        id="email"
+                        placeholder="Email"
+                        defaultValue={email}
                         required
-                        onChange={event => setemail(event.target.value)}
-                        disabled={loading} />
+                        onChange={(event) => setemail(event.target.value)}
+                        disabled={loading}
+                      />
                     </Form.Group>
                   </Col>
                   <Col md={6}>
-                    <Form.Group className='mt-2 '>
+                    <Form.Group className="mt-2 ">
                       <Form.Label>Password</Form.Label>
                       <Form.Control
-                        type='password'
-                        id='password'
-                        placeholder='Password'
-                        onChange={event => setpassword(event.target.value)}
-                        disabled={loading} />
+                        type="password"
+                        id="password"
+                        placeholder="Password"
+                        onChange={(event) => setpassword(event.target.value)}
+                        disabled={loading}
+                      />
                     </Form.Group>
                   </Col>
                   <Col md={6}>
-                    <Form.Group className='mt-2 '>
+                    <Form.Group className="mt-2 ">
                       <Form.Label>Gender</Form.Label>
-                      <Form.Select type='text'
-                        id='gender'
+                      <Form.Select
+                        type="text"
+                        id="gender"
                         required
-                        onChange={event => setgender(event.target.value)}
-                        disabled={loading}>
-                        <option selected disabled >{data.gender}</option>
+                        defaultValue={gender}
+                        onChange={(event) => setgender(event.target.value)}
+                        disabled={loading}
+                      >
+                        <option selected disabled>
+                          Select Gender
+                        </option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                       </Form.Select>
                     </Form.Group>
                   </Col>
                   <Col md={12}>
-                    <Form.Group className='mt-2 '>
+                    <Form.Group className="mt-2 ">
                       <Form.Label>Address</Form.Label>
                       <Form.Control
-                        as='textarea'
-                        id='address'
-                        placeholder='Address'
-                        defaultValue={data.address}
+                        as="textarea"
+                        id="address"
+                        placeholder="Address"
+                        defaultValue={address}
                         required
-                        onChange={event => setaddress(event.target.value)}
-                        disabled={loading} />
+                        onChange={(event) => setaddress(event.target.value)}
+                        disabled={loading}
+                      />
                     </Form.Group>
                   </Col>
                   <Col md={12}>
@@ -185,7 +220,7 @@ const EditUser = () => {
         </Row>
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default EditUser
+export default EditUser;

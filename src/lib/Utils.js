@@ -15,3 +15,9 @@ export const today = (dates) => {
 export const replaceAll = (str, find, replace) => {
   return str.replace(new RegExp(find, "g"), replace);
 };
+
+export const genderSelect = [
+  {key: 0, label : 'Select Gender'},
+  {key: 1, label : 'Male'},
+  {key: 2, label : 'Female'},
+];

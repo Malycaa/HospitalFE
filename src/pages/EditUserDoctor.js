@@ -14,6 +14,7 @@ import api from "../lib/api";
 import { setToken } from "../reducers/token-store";
 import register from "../register.jpg";
 import NavbarDoctor from "../components/NavbarDoctors";
+import { genderSelect } from "../lib/Utils";
 
 const EditUser = () => {
   const [data, setdata] = useState({});
@@ -64,7 +65,7 @@ const EditUser = () => {
     setage(storage.age);
     setemail(storage.email);
     setpassword(storage.password);
-    setgender(storage.gender);
+    // setgender(storage.gender);
     setaddress(storage.address);
     setdata(storage);
   }, []);
@@ -164,15 +165,23 @@ const EditUser = () => {
                         type="text"
                         id="gender"
                         required
+                        placeholder="Select Gender"
                         defaultValue={gender}
                         onChange={(event) => setgender(event.target.value)}
                         disabled={loading}
                       >
-                        <option selected disabled>
-                          Select Gender
-                        </option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
+                        {genderSelect.map((el) => {
+                          return (
+                            <option
+                              key={el.key}
+                              value={el.label}
+                              disabled={el.key === 0}
+                              select={(el.label == gender).toString}
+                            >
+                              {el.label}
+                            </option>
+                          );
+                        })}
                       </Form.Select>
                     </Form.Group>
                   </Col>

@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-bootstrap/Modal";
-import { today } from "../lib/Utils";
+import { today, truncate } from "../lib/Utils";
 import { Button, Container, Form, Row, Col, Card } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
+import MedicationListModal from "./MedicationListModal";
+import { LightTooltip, HtmlTooltip } from "../lib/Common";
 
 const TreatmentMoodal = (props) => {
+  const [getModalShow, setModalShow] = useState(false);
+  const [getSelected, setSelected] = useState({});
+
   useEffect(() => {}, []);
 
-   const bg = {
-   overlay: {
-     background: "#FFFF00"
-   }
- };
+  const tapSelectEvent = (el) => {
+    setSelected(el);
+    setTimeout(() => {
+      setModalShow(true);
+    }, 100);
+  };
 
   return (
     <>
@@ -45,12 +51,20 @@ const TreatmentMoodal = (props) => {
                     props.data.treatments.map((el, index) => (
                       <tr key={index}>
                         <td style={{ paddingTop: 14 }}>{el.sickness ?? "-"}</td>
-                        <td style={{ paddingTop: 14 }}>
-                          {el.sickness_desc ?? "-"}
-                        </td>
-                        <td style={{ paddingTop: 14 }}>
-                          {el.sickness_handling ?? "-"}
-                        </td>
+                        <LightTooltip title={el.sickness_desc} placement="top">
+                          <td style={{ paddingTop: 14 }}>
+                            {truncate(el.sickness_desc ?? "-", 7)}
+                          </td>
+                        </LightTooltip>
+                        <LightTooltip
+                          title={el.sickness_handling}
+                          placement="top"
+                        >
+                          <td style={{ paddingTop: 14 }}>
+                            {truncate(el.sickness_handling ?? "-", 7)}
+                          </td>
+                        </LightTooltip>
+
                         <td style={{ paddingTop: 14 }}>
                           {today(el.createTime)}
                         </td>
@@ -58,7 +72,7 @@ const TreatmentMoodal = (props) => {
                           <Button
                             className="bg-white text-dark"
                             style={{ borderColor: "white" }}
-                            // onClick={() => modalAction(el.patient_id)}
+                            onClick={() => tapSelectEvent(el)}
                           >
                             View
                           </Button>
@@ -82,6 +96,11 @@ const TreatmentMoodal = (props) => {
             </Button>
           </Modal.Footer>
         </Modal>
+        <MedicationListModal
+          show={getModalShow}
+          data={getSelected}
+          onHide={() => setModalShow(false)}
+        />
       </div>
     </>
   );

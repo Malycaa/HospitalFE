@@ -19,7 +19,7 @@ function NavbarDoctor() {
     ls.set("user", null);
     const check = ls.get("user") === null ? true : false;
     console.log(check);
-    window.location.href = "/login";
+    window.location.href = "/";
   }
 
   setTimeout(

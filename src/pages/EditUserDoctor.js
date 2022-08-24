@@ -65,7 +65,7 @@ const EditUser = () => {
     setage(storage.age);
     setemail(storage.email);
     setpassword(storage.password);
-    // setgender(storage.gender);
+    setgender(storage.gender);
     setaddress(storage.address);
     setdata(storage);
   }, []);
@@ -166,22 +166,15 @@ const EditUser = () => {
                         id="gender"
                         required
                         placeholder="Select Gender"
-                        defaultValue={gender}
+                        // defaultValue={response.data.data.gender}
                         onChange={(event) => setgender(event.target.value)}
                         disabled={loading}
                       >
-                        {genderSelect.map((el) => {
-                          return (
-                            <option
-                              key={el.key}
-                              value={el.label}
-                              disabled={el.key === 0}
-                              select={(el.label == gender).toString}
-                            >
-                              {el.label}
-                            </option>
-                          );
-                        })}
+                        <option selected disabled>
+                          {gender}
+                        </option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
                       </Form.Select>
                     </Form.Group>
                   </Col>

@@ -24,6 +24,7 @@ function App() {
     <Routes>
 
       {/* <Route path="/" element={<Navbarsuperadmin />} /> */}
+
       <Route path="/RegisterMedication" element={<RegisterMedication />} />
       <Route path="/ViewPatient/:patient_id" element={<ViewPatient />} />
       <Route path="/PatientTable" element={<PatientTable />} />
@@ -31,17 +32,11 @@ function App() {
       <Route path="/EditUserDoctor" element={<EditUserDoctor />} />
       <Route path="/doctors" element={<Doctors />} />
       <Route path="/RegisterDoctors" element={<RegisterDoctors />} />
-      <Route path="/" element={<Home />} />
-      <Route path="/product/:id" element={<Product />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/products" element={<Products />} />
+      <Route path="/" element={<LoginPage />} />
       <Route path="/superadmin" element={<SuperAdmin />} />
       <Route path="/RegisterPatient" element={<RegisterPatient />} />
       <Route path="/givingtreatment/:patient_id" element={<GivingTreatment />} />
       <Route path="/patientreporttable" element={<PatientReportTable />} />
-      <Route path="/" element={<SecurePage />} >
-        <Route path="create-product" element={<CreateProduct />} />
-      </Route>
     </Routes>
   );
 }

@@ -11,7 +11,7 @@ const Product = () => {
         try {
             const url = `/api/v1/products/${id}`;
             const response = await api.get(url);
-            const payload = { ...response?.data?.data?.product};
+            const payload = { ...response?.data?.data?.product };
             setProduct(payload);
         } catch (error) {
             console.log(error);

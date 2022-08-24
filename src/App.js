@@ -16,6 +16,7 @@ import EditUserDoctor from "./pages/EditUserDoctor";
 import PatientTable from "./pages/PatientTable";
 import ViewPatient from "./pages/ViewPatient";
 import PatientReportTable from "./pages/PatientReportTable";
+import RegisterMedication from "./pages/RegisterMedication";
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
     <Routes>
 
       {/* <Route path="/" element={<Navbarsuperadmin />} /> */}
+      <Route path="/RegisterMedication" element={<RegisterMedication />} />
       <Route path="/ViewPatient/:patient_id" element={<ViewPatient />} />
       <Route path="/PatientTable" element={<PatientTable />} />
       <Route path="/RegisterAdmin" element={<RegisterAdmin />} />

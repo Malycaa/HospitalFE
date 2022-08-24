@@ -88,6 +88,9 @@ const NavbarSuperAdmin = () => {
                   <Nav.Link href="/RegisterPatient" style={{ color: "black" }}>
                     Register Patient
                   </Nav.Link>
+                  <Nav.Link href="/RegisterMedication" style={{ color: "black" }}>
+                    Register Medication
+                  </Nav.Link>
                   <Nav.Link href="/PatientReportTable" style={{ color: "black" }}>
                     Patient Visit Report
                   </Nav.Link>

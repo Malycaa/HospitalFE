@@ -19,7 +19,7 @@ const RegisterPatient = () => {
   const [complaints, setcomplaints] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const handleSubmit = async () => {
     try {
@@ -67,7 +67,7 @@ const RegisterPatient = () => {
                 </Col>
                 <Row>
                   <Col md={6}>
-                    <Form.Group className="mt-2 c">
+                    <Form.Group className="mt-2">
                       <Form.Label>Full Name</Form.Label>
                       <Form.Control
                         type="text"
@@ -84,7 +84,12 @@ const RegisterPatient = () => {
                   <Col md={6}>
                     <Form.Group className="mt-2 text-start">
                       <Form.Label>Gender</Form.Label>
-                      <select class="form-select" aria-label="">
+                      <select class="form-select" aria-label=""
+                        onChange={(event) =>
+                          setgender(event.target.value)
+                        }
+                        disabled={loading}
+                      >
                         <option selected disabled>
                           Select Gender
                         </option>

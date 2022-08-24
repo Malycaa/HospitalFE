@@ -40,6 +40,26 @@ const PatientReportTable = () => {
     }
   };
 
+  const deleteApiData = async (props) => {
+    const url = `/api/patient/deletePatientById/${props.patient_id}`;
+    console.log(props.patient_id)
+    try {
+      setLoading(true);
+      await api
+        .delete(url)
+        .then((result) => {
+          if (result.status !== 200) {
+            alert('delete failed')
+          } else {
+            getApiData()
+          }
+          // setLoading(false);
+        });
+    } catch (error) {
+      alert(error);
+    }
+  };
+
   const tapSelectEvent = (el) => {
     setSelected(el);
     setTimeout(() => {
@@ -71,7 +91,7 @@ const PatientReportTable = () => {
               bordered
               hover
               variant="dark"
-              // className="text-center"
+            // className="text-center"
             >
               <thead>
                 <tr>
@@ -154,6 +174,14 @@ const PatientReportTable = () => {
                         onClick={() => tapSelectEvent(el)}
                       >
                         View
+                      </Button>
+                      &nbsp;&nbsp;
+                      <Button
+                        className="bg-white text-dark"
+                        style={{ borderColor: "white" }}
+                        onClick={() => deleteApiData(el)}
+                      >
+                        Delete
                       </Button>
                     </td>
                   </tr>

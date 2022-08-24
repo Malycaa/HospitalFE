@@ -77,8 +77,8 @@ function NavbarDoctor() {
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
+                  <Nav.Link href="/EditUserDoctor">Edit Profile</Nav.Link>
                   <Nav.Link href="/PatientTable">Register Treatment</Nav.Link>
-                  <Nav.Link href="/EditUserDoctor">Edit User</Nav.Link>
                   <Nav.Link href="#action2" onClick={logout}>
                     Log Out
                   </Nav.Link>

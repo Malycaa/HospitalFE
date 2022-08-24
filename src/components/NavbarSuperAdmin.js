@@ -79,6 +79,7 @@ const NavbarSuperAdmin = () => {
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
+                  <Nav.Link href="/EditUserDoctor">Edit Profile</Nav.Link>
                   <Nav.Link href="/RegisterAdmin" style={{ color: "black" }}>
                     Register Admin
                   </Nav.Link>
@@ -91,7 +92,6 @@ const NavbarSuperAdmin = () => {
                   <Nav.Link href="/RegisterMedication" style={{ color: "black" }}>
                     Register Medication
                   </Nav.Link>
-                  <Nav.Link href="/EditUserDoctor">Edit User</Nav.Link>
                   <Nav.Link href="/PatientReportTable" style={{ color: "black" }}>
                     Patient Visit Report
                   </Nav.Link>

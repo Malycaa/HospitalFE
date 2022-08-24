@@ -153,6 +153,7 @@ const EditUser = () => {
                         type="password"
                         id="password"
                         placeholder="Password"
+                        required
                         onChange={(event) => setpassword(event.target.value)}
                         disabled={loading}
                       />

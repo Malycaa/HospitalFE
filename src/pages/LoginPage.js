@@ -54,7 +54,7 @@ const LoginPage = () => {
                         encType=''
                         onSubmit={(event) => { event.preventDefault(); handleSubmit() }}>
                         <Form.Group className='mt-2 text-center'>
-                            <Form.Label>username</Form.Label>
+                            <Form.Label>Username</Form.Label>
                             <Form.Control
                                 type='text'
                                 id='username'

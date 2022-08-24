@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../lib/api";
 import { setToken } from "../reducers/token-store";
 import register from "../register.jpg";
-import NavbarDoctor from "../components/NavbarDoctors";
+import NavbarSuperAdmin from "../components/NavbarSuperAdmin";
 import { genderSelect } from "../lib/Utils";
 
 const EditUser = () => {
